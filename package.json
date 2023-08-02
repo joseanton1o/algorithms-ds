@@ -2,7 +2,9 @@
   "name": "algorithms-ds",
   "version": "1.0.0",
   "description": "Set of data structures and algorithims for typescript",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.mjs",
   "scripts": {
     "dev": "vitest",
     "test": "vitest run",

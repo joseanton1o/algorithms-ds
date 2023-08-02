@@ -1,2 +1,3 @@
+declare const helloWorld: () => void;
 
-export { }
+export { helloWorld };
