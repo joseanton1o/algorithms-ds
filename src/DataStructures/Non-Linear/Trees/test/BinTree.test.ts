@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { BinTree } from "./BinTree";
+import { BinTree } from "../BinTree";
 
-import { treeNode, stringfyPreOrder, stringfyInOrder, printTree } from "./treeNode";
+import { treeNode, stringfyPreOrder, stringfyInOrder, printTree } from "../treeNode";
 
 describe("BinTree", () => {
     it("should insert elements in the right order", () => {

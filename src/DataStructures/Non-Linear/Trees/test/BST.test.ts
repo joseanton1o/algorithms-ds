@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
 
-import { BST } from "./BST";
+import { BST } from "../BST";
 
-import { treeNode, stringfyPreOrder, stringfyInOrder, printTree } from "./treeNode";
+import { treeNode, stringfyPreOrder, stringfyInOrder, printTree } from "../treeNode";
 
 describe("BST", () => {
 

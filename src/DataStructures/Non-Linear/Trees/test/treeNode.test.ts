@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { treeNode } from "./treeNode";
+import { treeNode } from "../treeNode";
 
 import {    height, 
             stringfyInOrder, 
@@ -8,7 +8,7 @@ import {    height,
             stringfyPostOrder,
             linkSonToParent,
             isComplete  
-        } from "./treeNode";
+        } from "../treeNode";
 
 describe("treeNode", () => {
     // Creating a tree without bintree class
