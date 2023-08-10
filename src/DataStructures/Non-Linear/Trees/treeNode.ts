@@ -57,7 +57,7 @@ export function printTree(current: treeNode<any> | null, depth: number = 0): voi
 */
 export function height(root: treeNode<any>|null): number {
     if (root === null) {
-        return 0;
+        return -1;
     }
 
     return 1 + Math.max(height(root.left), height(root.right));

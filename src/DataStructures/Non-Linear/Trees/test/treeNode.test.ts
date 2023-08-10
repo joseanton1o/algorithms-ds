@@ -27,7 +27,7 @@ describe("treeNode", () => {
     root.right.right.parent = root.right;
 
     it ("should have the right height", () => {
-        expect(height(root)).toBe(3); // 3 levels counting root
+        expect(height(root)).toBe(2); 
     });
 
     it ("should have the right stringfyPreOrder", () => {
