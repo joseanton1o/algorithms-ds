@@ -10,11 +10,13 @@
     "test": "vitest run",
     "build": "tsup src/index.ts src/DataStructures --format cjs,esm --dts",
     "lint": "tsc",
-    "ci": "npm run lint && npm run test && npm run build"
+    "ci": "npm run lint && npm run test && npm run build",
+    "release": "npm run lint && npm run test && npm run build && changeset publish"
   },
   "author": "José Antonio",
   "license": "ISC",
   "devDependencies": {
+    "@changesets/cli": "^2.26.2",
     "tsup": "^7.1.0",
     "typescript": "^5.1.6",
     "vitest": "^0.34.1"
