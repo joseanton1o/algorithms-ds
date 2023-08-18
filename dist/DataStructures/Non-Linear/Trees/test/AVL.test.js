@@ -15014,28 +15014,11 @@ var treeNode = class {
     this.parent = null;
   }
 };
-function printTree(current, depth = 0) {
-  const indentation = "  ".repeat(depth);
-  if (current === null) {
-    return;
+function height(root) {
+  if (root === null) {
+    return -1;
   }
-  printTree(current.right, depth + 1);
-  console.log(indentation + current.value);
-  printTree(current.left, depth + 1);
-}
-function linkSonToParent(oldtreeNode, newNode) {
-  if (oldtreeNode !== null && oldtreeNode.parent !== null) {
-    if (newNode !== null) {
-      newNode.parent = oldtreeNode.parent;
-    }
-    if (oldtreeNode.parent.left === oldtreeNode) {
-      oldtreeNode.parent.left = newNode;
-    } else {
-      oldtreeNode.parent.right = newNode;
-    }
-  } else {
-    throw new Error("The treeNode to be replaced is null");
-  }
+  return 1 + Math.max(height(root.left), height(root.right));
 }
 function stringfyPreOrder(root) {
   if (root === null) {
@@ -15194,8 +15177,52 @@ var BinTree = class {
   }
 };
 
-// src/DataStructures/Non-Linear/Trees/BST.ts
-var BST = class extends BinTree {
+// src/DataStructures/Non-Linear/Trees/AVL.ts
+function rightRotation(current) {
+  if (current === null) {
+    return;
+  }
+  if (current.left === null) {
+    throw new Error("Left son of current node is null");
+  }
+  let currentLeft = current.left;
+  let parent = current.parent;
+  current.left = current.left.right;
+  current.parent = currentLeft;
+  currentLeft.right = current;
+  currentLeft.parent = parent;
+  if (currentLeft.parent !== null) {
+    currentLeft.parent.left = currentLeft;
+  }
+}
+function leftRotation(current) {
+  if (current === null) {
+    return;
+  }
+  if (current.right === null) {
+    throw new Error("Right son of current node is null");
+  }
+  let currentRight = current.right;
+  let parent = current.parent;
+  current.right = current.right.left;
+  current.parent = currentRight;
+  currentRight.left = current;
+  currentRight.parent = parent;
+  if (currentRight.parent !== null) {
+    currentRight.parent.left = currentRight;
+  }
+}
+function leftRightRotation(current) {
+  console.log("Left right rotation");
+  leftRotation(current.left);
+  rightRotation(current);
+}
+function rightLeftRotation(current) {
+  console.log("Right left rotation");
+  rightRotation(current.right);
+  leftRotation(current);
+}
+var AVL = class extends BinTree {
   constructor(root = null) {
     super(root);
   }
@@ -15205,7 +15232,8 @@ var BST = class extends BinTree {
       this.root = newNode;
       return true;
     } else {
-      return this.insertNode(this.root, newNode);
+      let insertion = this.insertNode(this.root, newNode);
+      return insertion;
     }
   }
   insertNode(current, newNode) {
@@ -15220,6 +15248,8 @@ var BST = class extends BinTree {
       if (current.left === null) {
         current.left = newNode;
         current.left.parent = current;
+        if (this.balance(newNode))
+          this.updateRoot();
         return true;
       } else {
         return this.insertNode(current.left, newNode);
@@ -15228,12 +15258,63 @@ var BST = class extends BinTree {
       if (current.right === null) {
         current.right = newNode;
         current.right.parent = current;
+        if (this.balance(newNode))
+          this.updateRoot();
         return true;
       } else {
         return this.insertNode(current.right, newNode);
       }
     }
     return false;
+  }
+  checkBalance(current) {
+    if (current === null) {
+      return 0;
+    }
+    return height(current.left) - height(current.right);
+  }
+  balance(insertedNode) {
+    let current = insertedNode.parent;
+    let rotated = false;
+    while (current !== null && !rotated) {
+      let balance = this.checkBalance(current);
+      if (balance > 1) {
+        if (current.left === null) {
+          throw new Error("Left son of current node is null");
+        }
+        if (insertedNode.value < current.left.value) {
+          console.log("Right rotation of ", current.value);
+          rightRotation(current);
+        } else {
+          leftRightRotation(current);
+        }
+        rotated = true;
+      } else if (balance < -1) {
+        if (current.right === null) {
+          throw new Error("Right son of current node is null");
+        }
+        if (insertedNode.value > current.right.value) {
+          console.log("Left rotation of ", current.value);
+          console.log("Left rotation");
+          leftRotation(current);
+        } else {
+          rightLeftRotation(current);
+        }
+        rotated = true;
+      }
+      current = current.parent;
+    }
+    return rotated;
+  }
+  updateRoot() {
+    let newRoot = this.root;
+    while (newRoot !== null) {
+      if (newRoot.parent !== null)
+        newRoot = newRoot.parent;
+      else
+        break;
+    }
+    this.root = newRoot;
   }
   search(value) {
     if (this.root === null) {
@@ -15253,129 +15334,37 @@ var BST = class extends BinTree {
       return current;
     }
   }
-  // This should not be called with undefined as value as it makes no sense to remove the last node in this kind of tree
-  remove(value) {
-    if (value === void 0) {
-      console.log("llamando a remove de bintree");
-      return super.remove();
-    }
-    if (this.root === null) {
-      return false;
-    } else {
-      let found3 = this.searchNode(this.root, value);
-      return this.removeNode(found3);
-    }
+  isBalanced() {
+    return this.isBalancedNode(this.root);
   }
-  removeNode(deleting) {
-    if (deleting === null) {
+  isBalancedNode(current) {
+    if (current === null) {
+      return true;
+    }
+    let balance = this.checkBalance(current);
+    if (balance > 1 || balance < -1) {
       return false;
     }
-    if (!deleting) {
-      return false;
-    }
-    if (deleting.left === null && deleting.right === null) {
-      linkSonToParent(deleting, null);
-      return true;
-    } else if (deleting.left !== null && deleting.right === null) {
-      linkSonToParent(deleting, deleting.left);
-      if (deleting.parent === null) {
-        deleting = deleting.left;
-      }
-      return true;
-    } else if (deleting.left === null && deleting.right !== null) {
-      linkSonToParent(deleting, deleting.right);
-      if (deleting.parent === null) {
-        deleting = deleting.right;
-      }
-      return true;
-    } else if (deleting.left !== null && deleting.right !== null) {
-      let aux = deleting.right;
-      while (aux.left !== null) {
-        aux = aux.left;
-      }
-      deleting.value = aux.value;
-      return this.removeNode(aux);
-    }
-    return false;
+    return this.isBalancedNode(current.left) && this.isBalancedNode(current.right);
   }
 };
 
-// src/DataStructures/Non-Linear/Trees/BST.test.ts
-describe("BST", () => {
-  it("should insert elements in the right order", () => {
-    const tree = new BST();
+// src/DataStructures/Non-Linear/Trees/test/AVL.test.ts
+describe("AVL", () => {
+  it("should insert and keep balance ", () => {
+    const tree = new AVL();
+    let balanced = tree.isBalanced();
+    globalExpect(balanced).toBe(true);
     const elementsToInsert = [10, 5, 15, 3, 7, 13, 17, 1, 4, 6, 8, 12, 14, 16, 18];
     elementsToInsert.forEach((element) => {
       tree.insert(element);
+      balanced = tree.isBalanced();
+      globalExpect(balanced).toBe(true);
     });
     let result = stringfyPreOrder(tree.root);
     globalExpect(result).toBe("10 5 3 1 4 7 6 8 15 13 12 14 17 16 18");
     result = stringfyInOrder(tree.root);
     globalExpect(result).toBe("1 3 4 5 6 7 8 10 12 13 14 15 16 17 18");
-  });
-  it("should have every node with the right parent", () => {
-    const tree = new BST();
-    const elementsToInsert = [10, 5, 15, 3, 7, 13, 17, 1, 4, 6, 8, 12, 14, 16, 18];
-    elementsToInsert.forEach((element) => {
-      tree.insert(element);
-    });
-    let current = tree.root;
-    globalExpect(current).not.toBe(null);
-    while (current !== null) {
-      if (current.left !== null) {
-        globalExpect(current.left.parent).toBe(current);
-      }
-      if (current.right !== null) {
-        globalExpect(current.right.parent).toBe(current);
-      }
-      current = current.left;
-    }
-  });
-  it("should delete the given element", () => {
-    const tree = new BST();
-    const elementsToInsert = [10, 5, 15, 3, 7, 13, 17, 1, 4, 6, 8, 12, 14, 16, 18];
-    elementsToInsert.forEach((element) => {
-      tree.insert(element);
-    });
-    tree.remove(10);
-    let result = stringfyPreOrder(tree.root);
-    globalExpect(result).toBe("12 5 3 1 4 7 6 8 15 13 14 17 16 18");
-    result = stringfyInOrder(tree.root);
-    globalExpect(result).toBe("1 3 4 5 6 7 8 12 13 14 15 16 17 18");
-  });
-  it("should delete the element that is at right", () => {
-    const tree = new BST();
-    const elementsToInsert = [10, 5, 15, 3, 7, 13, 17, 1, 4, 6, 8, 12, 14, 16, 18];
-    elementsToInsert.forEach((element) => {
-      tree.insert(element);
-    });
-    printTree(tree.root);
-    tree.remove();
-    let result = stringfyPreOrder(tree.root);
-    globalExpect(result).toBe("10 5 3 1 4 7 6 8 15 13 12 14 17 16");
-    result = stringfyInOrder(tree.root);
-    globalExpect(result).toBe("1 3 4 5 6 7 8 10 12 13 14 15 16 17");
-  });
-  it("should return the element with the tag", () => {
-    const tree = new BST();
-    const elementsToInsert = [10, 5, 15, 3, 7, 13, 17, 1, 4, 6, 8, 12, 14, 16, 18];
-    elementsToInsert.forEach((element) => {
-      tree.insert(element);
-    });
-    let result = tree.search(10);
-    globalExpect(result).not.toBe(null);
-    if (result !== null) {
-      globalExpect(result.value).toBe(10);
-    }
-  });
-  it("should return null when the element is not in the tree", () => {
-    const tree = new BST();
-    const elementsToInsert = [10, 5, 15, 3, 7, 13, 17, 1, 4, 6, 8, 12, 14, 16, 18];
-    elementsToInsert.forEach((element) => {
-      tree.insert(element);
-    });
-    let result = tree.search(11);
-    globalExpect(result).toBe(null);
   });
 });
 /*! Bundled license information:

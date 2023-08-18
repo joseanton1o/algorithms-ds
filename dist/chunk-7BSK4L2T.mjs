@@ -1,9 +1,9 @@
 import {
   Queue
-} from "./chunk-JXICQII7.mjs";
+} from "./chunk-3IVKBVPV.mjs";
 import {
   treeNode
-} from "./chunk-7ZGQKWX2.mjs";
+} from "./chunk-SLLFHR75.mjs";
 
 // src/DataStructures/Non-Linear/Trees/BinTree.ts
 var BinTree = class {
@@ -76,14 +76,15 @@ var BinTree = class {
     let current = this.root;
     let previous = null;
     let queue = new Queue();
-    while (!queue.isEmpty()) {
-      current = queue.pop();
+    queue.push(current);
+    while (!queue.isEmpty() && current !== null) {
       if (current.left !== null) {
         queue.push(current.left);
       }
       if (current.right !== null) {
         queue.push(current.right);
       }
+      current = queue.pop();
     }
     previous = current;
     if (previous !== null) {

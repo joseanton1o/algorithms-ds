@@ -1,5 +1,7 @@
-// src/DataStructures/Linear/Queue.ts
-var Queue = class {
+import "../../chunk-L4DI67DV.mjs";
+
+// src/DataStructures/Linear/Stack.ts
+var Stack = class {
   constructor() {
     this.data = [];
   }
@@ -10,10 +12,14 @@ var Queue = class {
     this.data.push(item);
   }
   pop() {
-    return this.data.shift();
+    let item = this.data.pop();
+    return item === void 0 ? null : item;
   }
   peek() {
-    return this.data[0];
+    if (this.data.length === 0) {
+      return null;
+    }
+    return this.data[this.data.length - 1];
   }
   size() {
     return this.data.length;
@@ -25,7 +31,6 @@ var Queue = class {
     this.data = [];
   }
 };
-
 export {
-  Queue
+  Stack
 };

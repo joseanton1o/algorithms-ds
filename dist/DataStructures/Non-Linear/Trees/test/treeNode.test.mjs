@@ -11,7 +11,7 @@ import {
   stringfyPostOrder,
   stringfyPreOrder,
   treeNode
-} from "../../../../chunk-7ZGQKWX2.mjs";
+} from "../../../../chunk-SLLFHR75.mjs";
 import "../../../../chunk-L4DI67DV.mjs";
 
 // src/DataStructures/Non-Linear/Trees/test/treeNode.test.ts
@@ -30,7 +30,7 @@ describe("treeNode", () => {
   root.right.right = new treeNode({ value: 17 });
   root.right.right.parent = root.right;
   it("should have the right height", () => {
-    globalExpect(height(root)).toBe(3);
+    globalExpect(height(root)).toBe(2);
   });
   it("should have the right stringfyPreOrder", () => {
     globalExpect(stringfyPreOrder(root)).toBe("10 5 3 7 15 13 17");

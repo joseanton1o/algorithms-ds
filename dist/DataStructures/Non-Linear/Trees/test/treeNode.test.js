@@ -15016,7 +15016,7 @@ var treeNode = class {
 };
 function height(root) {
   if (root === null) {
-    return 0;
+    return -1;
   }
   return 1 + Math.max(height(root.left), height(root.right));
 }
@@ -15102,7 +15102,7 @@ describe("treeNode", () => {
   root.right.right = new treeNode({ value: 17 });
   root.right.right.parent = root.right;
   it("should have the right height", () => {
-    globalExpect(height(root)).toBe(3);
+    globalExpect(height(root)).toBe(2);
   });
   it("should have the right stringfyPreOrder", () => {
     globalExpect(stringfyPreOrder(root)).toBe("10 5 3 7 15 13 17");
