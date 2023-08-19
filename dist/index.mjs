@@ -9,6 +9,11 @@ import {
 } from "./chunk-7BSK4L2T.mjs";
 import "./chunk-3IVKBVPV.mjs";
 import {
+  height,
+  printTree,
+  stringfyInOrder,
+  stringfyPostOrder,
+  stringfyPreOrder,
   treeNode
 } from "./chunk-SLLFHR75.mjs";
 import "./chunk-L4DI67DV.mjs";
@@ -52,6 +57,11 @@ export {
   AVL,
   BST,
   BinTree,
+  height,
   mergeSort,
+  printTree,
+  stringfyInOrder,
+  stringfyPostOrder,
+  stringfyPreOrder,
   treeNode
 };

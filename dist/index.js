@@ -23,7 +23,12 @@ __export(src_exports, {
   AVL: () => AVL,
   BST: () => BST,
   BinTree: () => BinTree,
+  height: () => height,
   mergeSort: () => mergeSort,
+  printTree: () => printTree,
+  stringfyInOrder: () => stringfyInOrder,
+  stringfyPostOrder: () => stringfyPostOrder,
+  stringfyPreOrder: () => stringfyPreOrder,
   treeNode: () => treeNode
 });
 module.exports = __toCommonJS(src_exports);
@@ -38,6 +43,15 @@ var treeNode = class {
     this.parent = null;
   }
 };
+function printTree(current, depth = 0) {
+  const indentation = "  ".repeat(depth);
+  if (current === null) {
+    return;
+  }
+  printTree(current.right, depth + 1);
+  console.log(indentation + current.value);
+  printTree(current.left, depth + 1);
+}
 function height(root) {
   if (root === null) {
     return -1;
@@ -57,6 +71,45 @@ function linkSonToParent(oldtreeNode, newNode) {
   } else {
     throw new Error("The treeNode to be replaced is null");
   }
+}
+function stringfyPreOrder(root) {
+  if (root === null) {
+    return "";
+  }
+  let result = "";
+  result += root.value + " ";
+  result += stringfyPreOrder(root.left);
+  result += stringfyPreOrder(root.right);
+  if (root.parent === null) {
+    result = result.trim();
+  }
+  return result;
+}
+function stringfyInOrder(root) {
+  if (root === null) {
+    return "";
+  }
+  let result = "";
+  result += stringfyInOrder(root.left);
+  result += root.value + " ";
+  result += stringfyInOrder(root.right);
+  if (root.parent === null) {
+    result = result.trim();
+  }
+  return result;
+}
+function stringfyPostOrder(root) {
+  if (root === null) {
+    return "";
+  }
+  let result = "";
+  result += stringfyPostOrder(root.left);
+  result += stringfyPostOrder(root.right);
+  result += root.value + " ";
+  if (root.parent === null) {
+    result = result.trim();
+  }
+  return result;
 }
 
 // src/DataStructures/Linear/Queue.ts
@@ -507,6 +560,11 @@ function merge(left, right, comparator) {
   AVL,
   BST,
   BinTree,
+  height,
   mergeSort,
+  printTree,
+  stringfyInOrder,
+  stringfyPostOrder,
+  stringfyPreOrder,
   treeNode
 });
