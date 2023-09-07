@@ -1,6 +1,6 @@
 {
   "name": "algorithms-ds",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Set of data structures and algorithims for typescript",
   "private": false,
   "main": "./dist/index.js",

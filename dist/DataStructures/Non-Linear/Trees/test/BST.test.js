@@ -15014,15 +15014,6 @@ var treeNode = class {
     this.parent = null;
   }
 };
-function printTree(current, depth = 0) {
-  const indentation = "  ".repeat(depth);
-  if (current === null) {
-    return;
-  }
-  printTree(current.right, depth + 1);
-  console.log(indentation + current.value);
-  printTree(current.left, depth + 1);
-}
 function linkSonToParent(oldtreeNode, newNode) {
   if (oldtreeNode !== null && oldtreeNode.parent !== null) {
     if (newNode !== null) {
@@ -15349,7 +15340,6 @@ describe("BST", () => {
     elementsToInsert.forEach((element) => {
       tree.insert(element);
     });
-    printTree(tree.root);
     tree.remove();
     let result = stringfyPreOrder(tree.root);
     globalExpect(result).toBe("10 5 3 1 4 7 6 8 15 13 12 14 17 16");

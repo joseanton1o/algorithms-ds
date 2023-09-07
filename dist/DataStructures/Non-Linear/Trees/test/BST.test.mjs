@@ -9,7 +9,6 @@ import {
 import "../../../../chunk-7BSK4L2T.mjs";
 import "../../../../chunk-3IVKBVPV.mjs";
 import {
-  printTree,
   stringfyInOrder,
   stringfyPreOrder
 } from "../../../../chunk-SLLFHR75.mjs";
@@ -64,7 +63,6 @@ describe("BST", () => {
     elementsToInsert.forEach((element) => {
       tree.insert(element);
     });
-    printTree(tree.root);
     tree.remove();
     let result = stringfyPreOrder(tree.root);
     globalExpect(result).toBe("10 5 3 1 4 7 6 8 15 13 12 14 17 16");

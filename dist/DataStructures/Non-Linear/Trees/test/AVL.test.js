@@ -15020,19 +15020,6 @@ function height(root) {
   }
   return 1 + Math.max(height(root.left), height(root.right));
 }
-function stringfyPreOrder(root) {
-  if (root === null) {
-    return "";
-  }
-  let result = "";
-  result += root.value + " ";
-  result += stringfyPreOrder(root.left);
-  result += stringfyPreOrder(root.right);
-  if (root.parent === null) {
-    result = result.trim();
-  }
-  return result;
-}
 function stringfyInOrder(root) {
   if (root === null) {
     return "";
@@ -15041,6 +15028,19 @@ function stringfyInOrder(root) {
   result += stringfyInOrder(root.left);
   result += root.value + " ";
   result += stringfyInOrder(root.right);
+  if (root.parent === null) {
+    result = result.trim();
+  }
+  return result;
+}
+function stringfyPostOrder(root) {
+  if (root === null) {
+    return "";
+  }
+  let result = "";
+  result += stringfyPostOrder(root.left);
+  result += stringfyPostOrder(root.right);
+  result += root.value + " ";
   if (root.parent === null) {
     result = result.trim();
   }
@@ -15209,7 +15209,7 @@ function leftRotation(current) {
   currentRight.left = current;
   currentRight.parent = parent;
   if (currentRight.parent !== null) {
-    currentRight.parent.left = currentRight;
+    currentRight.parent.right = currentRight;
   }
 }
 function leftRightRotation(current) {
@@ -15355,16 +15355,16 @@ describe("AVL", () => {
     const tree = new AVL();
     let balanced = tree.isBalanced();
     globalExpect(balanced).toBe(true);
-    const elementsToInsert = [10, 5, 15, 3, 7, 13, 17, 1, 4, 6, 8, 12, 14, 16, 18];
+    const elementsToInsert = [10, 5, 15, 3, 7, 12, 17, 2, 4, 6, 9, 11, 14, 16, 18];
     elementsToInsert.forEach((element) => {
       tree.insert(element);
       balanced = tree.isBalanced();
       globalExpect(balanced).toBe(true);
     });
-    let result = stringfyPreOrder(tree.root);
-    globalExpect(result).toBe("10 5 3 1 4 7 6 8 15 13 12 14 17 16 18");
+    let result = stringfyPostOrder(tree.root);
+    globalExpect(result).toBe("2 4 3 6 9 7 5 11 14 12 16 18 17 15 10");
     result = stringfyInOrder(tree.root);
-    globalExpect(result).toBe("1 3 4 5 6 7 8 10 12 13 14 15 16 17 18");
+    globalExpect(result).toBe("2 3 4 5 6 7 9 10 11 12 14 15 16 17 18");
   });
 });
 /*! Bundled license information:

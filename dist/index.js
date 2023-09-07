@@ -274,7 +274,7 @@ function leftRotation(current) {
   currentRight.left = current;
   currentRight.parent = parent;
   if (currentRight.parent !== null) {
-    currentRight.parent.left = currentRight;
+    currentRight.parent.right = currentRight;
   }
 }
 function leftRightRotation(current) {
