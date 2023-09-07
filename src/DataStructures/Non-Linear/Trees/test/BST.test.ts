@@ -79,7 +79,6 @@ describe("BST", () => {
         elementsToInsert.forEach((element) => {
             tree.insert(element);
         });
-        printTree(tree.root);
 
         tree.remove();
 

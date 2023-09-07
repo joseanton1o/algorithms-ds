@@ -33,21 +33,6 @@ function leftRotation(current: treeNode<any>|null): void | never{
         return;
     }
 
-    /*
-        1
-         \
-          2
-           \
-            3
-        
-            Right son of 1 will be left son of 2
-            Left son of 2 will be 1
-            2 will be the new root
-            parent of 1 will be 2 and parent of 2 will be parent of 1
-            Right son of 2 wont change
-            Left son of 1 wont change
-
-    */
     if (current.right === null) {
         throw new Error("Right son of current node is null");
     }
@@ -63,7 +48,7 @@ function leftRotation(current: treeNode<any>|null): void | never{
     
     currentRight.parent = parent;
     if (currentRight.parent !== null) {
-        currentRight.parent.left = currentRight;
+        currentRight.parent.right = currentRight;
     }
 }
 

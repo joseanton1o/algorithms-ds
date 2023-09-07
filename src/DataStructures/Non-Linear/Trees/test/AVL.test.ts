@@ -19,7 +19,7 @@ describe("AVL", () => {
         let balanced = tree.isBalanced();
         expect(balanced).toBe(true);
 
-        const elementsToInsert = [10, 5, 15, 3, 7, 13, 17, 1, 4, 6, 8, 12, 14, 16, 18];
+        const elementsToInsert = [10, 5, 15, 3, 7, 12, 17, 2, 4, 6, 9, 11, 14, 16, 18];
 
         elementsToInsert.forEach((element) => {
             tree.insert(element);
@@ -28,13 +28,13 @@ describe("AVL", () => {
 
         });
 
-        let result = stringfyPreOrder(tree.root);
+        let result = stringfyPostOrder(tree.root);
 
-        expect(result).toBe("10 5 3 1 4 7 6 8 15 13 12 14 17 16 18");
+        expect(result).toBe("2 4 3 6 9 7 5 11 14 12 16 18 17 15 10");
 
         result = stringfyInOrder(tree.root);
 
-        expect(result).toBe("1 3 4 5 6 7 8 10 12 13 14 15 16 17 18");
+        expect(result).toBe("2 3 4 5 6 7 9 10 11 12 14 15 16 17 18");
 
     });
 
