@@ -1,5 +1,0 @@
----
-"algorithms-ds": patch
----
-
-BugFix
